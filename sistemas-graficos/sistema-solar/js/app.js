@@ -360,7 +360,7 @@ function actualizarEscena() {
    */
     const earthTranslationAngularSpeed = 2;
     const earthRotationAngularSpeed = 80;
-    const earthSunDistance = 60;
+    const earthSunDistance = 120;
     
     let earthTranslation = mat4.create();
     // tierra
@@ -373,9 +373,8 @@ function actualizarEscena() {
     
     mat4.rotateY(earth, earth, earthTranslationAngularSpeed * tiempo)
     mat4.translate(earth, earth, [earthSunDistance, 0, 0]);
-    mat4.rotateZ(earth, earth, earthInclinationAngle);
-
     mat4.rotateY(earth, earth, earthRotationAngularSpeed * tiempo);
+    mat4.rotateZ(earth, earth, earthInclinationAngle);
     setTransform(earthModel, earth);
     
 
@@ -406,68 +405,6 @@ function actualizarEscena() {
     mat4.rotateY(iss, iss, glMatrix.toRadian(90));
     mat4.rotateX(iss, iss, -glMatrix.toRadian(30));
     setTransform(issModel, iss);
-
-    var beta = tiempo * 35;
-            var anio = tiempo * 3.3;
-            var dia = tiempo * 90;
-            var iss_t = tiempo * 70;
-
-            //tierra + luna
-            m1=mat4.create();
-
-            mat4.rotate(m1,m1,anio,vec3.fromValues(0,1,0));
-            mat4.translate(m1,m1,[60,0,0]);    
-            
-            //para evitar que rote mirando al sol
-            mat4.rotate(m1,m1,-anio,vec3.fromValues(0,1,0));    
-            
-
-            // tierra
-            mTierra = mat4.create();
-
-            mat4.translate(mTierra,m1,[0,0,0]);
-
-
-            //mTierra = mIdentidad * mRot * m1 * mRot
-            mat4.rotate(mTierra,mTierra,0.128*Math.PI, vec3.fromValues(1,0,0));            
-            
-            //mTierra = mIdentidad * mRot * m1
-            mat4.rotate(mTierra,mTierra,dia,vec3.fromValues(0,1,0));
-
-            
-
-            setTransform(tierra,mTierra);
-  
-            // luna
-            m2=mat4.create();      
-            
-            //m2 = m1 * mRot
-            mat4.rotate(m2,m1,beta,vec3.fromValues(0,1,0));
-            
-            //centro de coordenadas es la matriz que heredamos de antes (m1)
-            // m2 = m1 * mRot * mTras
-            mat4.translate(m2,m2,[30,0,0]);
-
-            setTransform(luna,m2);  
-
-            // apollo
-            m3=mat4.create();
-            
-            mat4.translate(m3,m2,[1.5,1.5,0]);
-            mat4.rotate(m3,m3,-Math.PI/4,vec3.fromValues(0,0,1));
-
-            setTransform(apollo,m3);    
-
-            // iss
-            m4=mat4.create();
-
-            mat4.rotate(m4,m1,iss_t,vec3.fromValues(1,0,0))
-
-            mat4.translate(m4,m4,[0,10,0]);
-            
-            mat4.rotate(m4,m4, -Math.PI/2, vec3.fromValues(1,0,0))
-
-            setTransform(iss,m4);  
 
 
     // *********************************************************************************************
