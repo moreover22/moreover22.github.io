@@ -365,35 +365,45 @@ function actualizarEscena() {
 
    *********************************************************************************
    */
+    const earthTranslationAngularSpeed = 2;
+    const earthRotationAngularSpeed = 80;
+    const earthSunDistance = 100;
+    
     let earthTranslation = mat4.create();
     // tierra
     const earthInclinationAngle = glMatrix.toRadian(23);
-    mat4.rotateY(earthTranslation, earthTranslation, 2 * tiempo)
-    mat4.translate(earthTranslation, earthTranslation, [120, 0, 0]);
+    mat4.rotateY(earthTranslation, earthTranslation, earthTranslationAngularSpeed * tiempo)
+    mat4.translate(earthTranslation, earthTranslation, [earthSunDistance, 0, 0]);
     
     let earth = mat4.clone(earthTranslation);
-    mat4.rotateZ(earth, earth, earthInclinationAngle)
+    mat4.rotateZ(earth, earth, earthInclinationAngle);
+    mat4.rotateY(earth, earth, earthRotationAngularSpeed * tiempo);
     setTransform(earthModel, earth);
-
+    
     // luna
     let moon = mat4.clone(earthTranslation);
-    mat4.rotateY(moon, moon, 10 * tiempo)
-    mat4.translate(moon, moon, [15, 0, 0]);
+    const earthMoonDistance = 30;
+    const moonTranslationAngularSpeed = earthRotationAngularSpeed / 5;
+    mat4.rotateY(moon, moon, moonTranslationAngularSpeed * tiempo)
+    mat4.translate(moon, moon, [earthMoonDistance, 0, 0]);
     setTransform(moonModel, moon);
 
     // apollo
     let apollo = mat4.clone(moon);
-    const apolloMoonDistance = vec3.fromValues(2, 0, 0);
+    const apolloMoonDistance = 2;
+
     mat4.rotateZ(apollo, apollo, glMatrix.toRadian(30));
-    mat4.translate(apollo, apollo, apolloMoonDistance);
+    mat4.translate(apollo, apollo, [apolloMoonDistance, 0, 0]);
     mat4.rotateZ(apollo, apollo, -glMatrix.toRadian(90));
 
     setTransform(apolloModel, apollo);
 
     // iss
     let iss = mat4.clone(earthTranslation);
-    mat4.rotateZ(iss, iss, tiempo*9);
-    mat4.translate(iss, iss, [12, 0, 0]);
+    const earthISSDistance = 12;
+    const issTranslationAngularSpeed = 30;
+    mat4.rotateZ(iss, iss, tiempo * issTranslationAngularSpeed);
+    mat4.translate(iss, iss, [earthISSDistance, 0, 0]);
     mat4.rotateY(iss, iss, glMatrix.toRadian(90));
     mat4.rotateX(iss, iss, -glMatrix.toRadian(30));
     setTransform(issModel, iss);
