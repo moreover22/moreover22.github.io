@@ -364,17 +364,16 @@ function actualizarEscena() {
     
     let earthTranslation = mat4.create();
     // tierra
-    const earthInclinationAngle = glMatrix.toRadian(23);
+    const earthInclinationAngle = -glMatrix.toRadian(23);
     mat4.rotateY(earthTranslation, earthTranslation, earthTranslationAngularSpeed * tiempo)
     mat4.translate(earthTranslation, earthTranslation, [earthSunDistance, 0, 0]);
+    mat4.rotateY(earthTranslation, earthTranslation, -earthTranslationAngularSpeed * tiempo)
     
-    // let earth = mat4.clone(earthTranslation);
-    let earth = mat4.create();
+    let earth = mat4.clone(earthTranslation);
     
-    mat4.rotateY(earth, earth, earthTranslationAngularSpeed * tiempo)
-    mat4.translate(earth, earth, [earthSunDistance, 0, 0]);
-    mat4.rotateY(earth, earth, earthRotationAngularSpeed * tiempo);
+    
     mat4.rotateZ(earth, earth, earthInclinationAngle);
+    mat4.rotateY(earth, earth, earthRotationAngularSpeed * tiempo);
     setTransform(earthModel, earth);
     
 
@@ -399,7 +398,7 @@ function actualizarEscena() {
     // iss
     let iss = mat4.clone(earthTranslation);
     const earthISSDistance = 12;
-    const issTranslationAngularSpeed = 30;
+    const issTranslationAngularSpeed = 60;
     mat4.rotateZ(iss, iss, tiempo * issTranslationAngularSpeed);
     mat4.translate(iss, iss, [earthISSDistance, 0, 0]);
     mat4.rotateY(iss, iss, glMatrix.toRadian(90));
