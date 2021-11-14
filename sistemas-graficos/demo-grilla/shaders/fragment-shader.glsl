@@ -3,6 +3,7 @@ precision mediump float;
 varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vWorldPosition;
+varying float vTime;
 
 uniform vec3 uAmbientColor;         // color de luz ambiente
 uniform vec3 uDirectionalColor;	    // color de luz direccional
@@ -14,13 +15,13 @@ uniform sampler2D uSampler;
 
 void main(void) {
 
-    vec3 lightDirection = normalize(uLightPosition - vec3(vWorldPosition));
+    vec3 lightDirection = normalize(uLightPosition - vWorldPosition);
 
-    vec3 color = (uAmbientColor + uDirectionalColor * max(dot(vNormal, lightDirection), 0.0));
+    vec3 color = (uAmbientColor + vTime * uDirectionalColor * max(dot(vNormal, lightDirection), 0.0));
 
-    color.x = vUv.x;
-    color.y = vUv.y;
-    color.z = 0.0;
+    color.r += 0.4 * vUv.x * (sin(vTime) + 1.0) / 2.0;
+    color.g += 0.4 * vUv.y * (cos(vTime) + 1.0) / 2.0;
+    color.b += 0.4 *  vUv.x * vUv.y * (cos(vTime) + 1.0) / 2.0;
 
     if(uUseLighting)
         gl_FragColor = vec4(color, 1.0);

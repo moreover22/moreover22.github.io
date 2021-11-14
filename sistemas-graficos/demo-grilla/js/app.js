@@ -137,7 +137,7 @@ let matrizVista = mat4.create();
 let matrizModelado = mat4.create();
 
 function setMatrixUniforms() {
-
+    mat4.translate(matrizModelado, matrizModelado, [0.01, 0, 0])
     gl.uniformMatrix4fv(shaderProgram.mMatrixUniform, false, matrizModelado);
     gl.uniformMatrix4fv(shaderProgram.vMatrixUniform, false, matrizVista);
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, matrizProyeccion);
@@ -169,8 +169,8 @@ function drawScene() {
     // Se inicializan las letiables asociadas con la Iluminación
 
     gl.uniform1f(shaderProgram.frameUniform, time / 10.0);
-    gl.uniform3f(shaderProgram.ambientColorUniform, 0.6, 0.6, 0.6);
-    gl.uniform3f(shaderProgram.directionalColorUniform, 1.2, 1.1, 0.7);
+    gl.uniform3f(shaderProgram.ambientColorUniform, 0.1, 0.6, 0.1);
+    gl.uniform3f(shaderProgram.directionalColorUniform, 0.7, 0.1, 0.7);
     gl.uniform1i(shaderProgram.useLightingUniform, (lighting == "true"));
 
     // Definimos la ubicación de la camara                        
@@ -181,7 +181,7 @@ function drawScene() {
         vec3.fromValues(0, 1, 0)
     );
 
-    let lightPosition = [10.0, 0.0, 3.0];
+    let lightPosition = [-1, 0, 0];
     gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);
 
     setMatrixUniforms();

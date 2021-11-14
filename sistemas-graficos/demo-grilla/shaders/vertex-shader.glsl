@@ -25,7 +25,8 @@ uniform sampler2D uSampler;         // sampler de textura de la tierra
 
 varying vec3 vWorldPosition;
 varying vec3 vNormal;
-varying vec2 vUv;                           
+varying vec2 vUv;
+varying float vTime;
 
         // constantes
 
@@ -52,4 +53,5 @@ void main(void) {
         vWorldPosition = worldPos.xyz;
         vNormal = normalize(uNMatrix * aNormal);
         vUv = uv;
+        vTime = time;
 }
